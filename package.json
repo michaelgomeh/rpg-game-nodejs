@@ -12,5 +12,8 @@
 	"bin": {
 		"rpg-game": "./index.js"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"inquirer": "^12.5.0"
+	}
 }
