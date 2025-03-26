@@ -8,10 +8,10 @@ class Card {
 class Deck {
 	constructor() {
 		this.cards = [
-			new Card('item', 'Health potion'),
-			new Card('enemy', 'Wild wolf'),
-			new Card('item', 'Sword'),
-			new Card('enemy', 'Bandit'),
+			new Card('item', 'health-potion'),
+			new Card('enemy', 'wild-wolf'),
+			new Card('item', 'sword'),
+			new Card('enemy', 'bandit'),
 		];
 	}
 
