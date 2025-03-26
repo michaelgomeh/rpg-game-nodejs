@@ -18,7 +18,8 @@ const { name } = await inquirer.prompt({
 const player = new Player(name);
 const deck = new Deck();
 
-const cardEventTitleGenerator = (type, name) => {
+const cardEventTitleGenerator = (card) => {
+	const { name, type } = card;
 	switch (type) {
 		case 'item':
 			return `You found a ${cardName(name)}!`;
@@ -53,7 +54,7 @@ const battle = async (enemyName) => {
 
 		process.exit();
 	} else {
-		console.log('you won!');
+		console.log('You won!');
 		await sleep(1000);
 
 		showNextTurnMenu();
@@ -83,7 +84,8 @@ const handleDrawCard = async () => {
 	const card = deck.drawNextCard();
 
 	const { name, type } = card;
-	console.log(cardEventTitleGenerator(type, name));
+
+	console.log(cardEventTitleGenerator(card));
 
 	await sleep(1000);
 
@@ -101,10 +103,16 @@ const handleDrawCard = async () => {
 	}
 };
 
+const handleViewInventory = async () => {
+	player.logInventory();
+	await sleep(2000);
+	showNextTurnMenu();
+};
+
 const handleChoice = (choice) => {
 	switch (choice) {
 		case 'Exit Game':
-			console.log('\nGoodbye!');
+			console.log('Goodbye!');
 			process.exit();
 
 		case 'Draw a card':
@@ -116,12 +124,11 @@ const handleChoice = (choice) => {
 			break;
 
 		case 'View Inventory':
-			console.log(player.logInventory());
-			showNextTurnMenu();
+			handleViewInventory();
 			break;
 
-		case 'Log stats':
-			console.log(player.logStats);
+		case 'Show stats':
+			player.logStats();
 			showNextTurnMenu();
 			break;
 
@@ -135,7 +142,13 @@ const showNextTurnMenu = async () => {
 		type: 'list',
 		name: 'choice',
 		message: 'Choose your next action:',
-		choices: ['Draw a card', 'View Inventory', 'Use Item', 'Exit Game'],
+		choices: [
+			'Draw a card',
+			'Show stats',
+			'View Inventory',
+			'Use Item',
+			'Exit Game',
+		],
 	});
 
 	handleChoice(choice);

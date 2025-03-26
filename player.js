@@ -11,13 +11,11 @@ class Player {
 	}
 
 	logStats() {
-		console.log(`Mighty ${this.name} has ${hp} HP`);
+		console.log(`Mighty ${this.name} has ${this.hp} HP`);
 	}
 
 	logInventory() {
-		console.log(
-			`${this.name}'s inventory includes: ${this.inventory.join(', ')}`
-		);
+		console.log(this.inventory.join(', '));
 	}
 	useItem(itemName) {
 		switch (itemName) {
@@ -31,6 +29,8 @@ class Player {
 				break;
 		}
 		console.log(`Used item ${itemName}`);
+		const index = this.inventory.indexOf(itemName);
+		this.inventory = this.inventory.splice(index, 1);
 	}
 	loot(itemName) {
 		this.inventory.push(itemName);
