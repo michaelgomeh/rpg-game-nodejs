@@ -8,6 +8,7 @@ class Card {
 class Deck {
 	constructor() {
 		this.cards = [
+			new Card('item', 'nothing'),
 			new Card('item', 'health-potion'),
 			new Card('enemy', 'wild-wolf'),
 			new Card('item', 'sword'),

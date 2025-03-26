@@ -109,6 +109,12 @@ const handleViewInventory = async () => {
 	showNextTurnMenu();
 };
 
+const handleViewStats = async () => {
+	player.logStats();
+	await sleep(2000);
+	showNextTurnMenu();
+};
+
 const handleChoice = (choice) => {
 	switch (choice) {
 		case 'Exit Game':
@@ -128,8 +134,7 @@ const handleChoice = (choice) => {
 			break;
 
 		case 'Show stats':
-			player.logStats();
-			showNextTurnMenu();
+			handleViewStats();
 			break;
 
 		default:
@@ -138,6 +143,11 @@ const handleChoice = (choice) => {
 };
 
 const showNextTurnMenu = async () => {
+	if (deck.cards.length === 0) {
+		console.log('Game Ended!');
+		process.exit();
+	}
+
 	const { choice } = await inquirer.prompt({
 		type: 'list',
 		name: 'choice',
