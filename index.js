@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import inquirer from 'inquirer';
+import Player from './Player.js';
 
 const handleChoice = (choice) => {
 	switch (choice) {
@@ -30,6 +31,14 @@ const showNextTurnMenu = async () => {
 	handleChoice(choice);
 };
 
-console.log('Start Game!');
+console.log('Game is starting!');
+
+const { name } = await inquirer.prompt({
+	type: 'input',
+	name: 'name',
+	message: "What's your name, adventurer?",
+});
+
+const player = new Player(name);
 
 showNextTurnMenu();
