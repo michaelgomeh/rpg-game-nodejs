@@ -1,5 +1,6 @@
 const itemStat = {
 	sword: { att: 2 },
+	'health-potion': { hp: 6 },
 };
 
 const enemyStat = {

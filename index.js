@@ -66,6 +66,19 @@ const lootItem = async (itemName) => {
 	showNextTurnMenu();
 };
 
+const handleUseItem = async () => {
+	const { item } = await inquirer.prompt({
+		type: 'list',
+		name: 'item',
+		message: 'Choose item to consume:',
+		choices: player.inventory,
+	});
+	console.log(`Using ${item}...`);
+	await sleep(500);
+	player.useItem(item);
+	showNextTurnMenu();
+};
+
 const handleDrawCard = async () => {
 	const card = deck.drawNextCard();
 
@@ -98,6 +111,10 @@ const handleChoice = (choice) => {
 			handleDrawCard();
 			break;
 
+		case 'Use Item':
+			handleUseItem();
+			break;
+
 		case 'View Inventory':
 			console.log(player.logInventory());
 			showNextTurnMenu();
@@ -118,7 +135,7 @@ const showNextTurnMenu = async () => {
 		type: 'list',
 		name: 'choice',
 		message: 'Choose your next action:',
-		choices: ['Draw a card', 'View Inventory', 'Exit Game'],
+		choices: ['Draw a card', 'View Inventory', 'Use Item', 'Exit Game'],
 	});
 
 	handleChoice(choice);

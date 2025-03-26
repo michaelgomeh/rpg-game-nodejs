@@ -19,6 +19,19 @@ class Player {
 			`${this.name}'s inventory includes: ${this.inventory.join(', ')}`
 		);
 	}
+	useItem(itemName) {
+		switch (itemName) {
+			case 'health-potion':
+				const additionalHp = itemStat[itemName].hp;
+				this.hp += itemStat[itemName].hp;
+				console.log(`You got ${additionalHp} HP! Now you have ${this.hp} HP`);
+				break;
+
+			default:
+				break;
+		}
+		console.log(`Used item ${itemName}`);
+	}
 	loot(itemName) {
 		this.inventory.push(itemName);
 		const { att } = itemStat[itemName];
