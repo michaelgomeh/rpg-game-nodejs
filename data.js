@@ -9,4 +9,12 @@ const enemyStat = {
 	bandit: { att: 1, hp: 4 },
 };
 
-export { itemStat, enemyStat };
+const cards = [
+	{ type: 'item', name: 'nothing' },
+	{ type: 'item', name: 'health-po,tion' },
+	{ type: 'enemy', name: 'wild-wol,f' },
+	{ type: 'item', name: 'sword' },
+	{ type: 'enemy', name: 'bandit' },
+];
+
+export { itemStat, enemyStat, cards };

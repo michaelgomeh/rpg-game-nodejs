@@ -1,3 +1,5 @@
+import { cards } from './data.js';
+
 class Card {
 	constructor(type, name) {
 		this.type = type;
@@ -7,13 +9,7 @@ class Card {
 
 class Deck {
 	constructor() {
-		this.cards = [
-			new Card('item', 'nothing'),
-			new Card('item', 'health-potion'),
-			new Card('enemy', 'wild-wolf'),
-			new Card('item', 'sword'),
-			new Card('enemy', 'bandit'),
-		];
+		this.cards = cards.map((e) => new Card(e.type, e.name));
 	}
 
 	drawNextCard() {
