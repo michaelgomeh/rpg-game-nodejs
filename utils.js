@@ -1,6 +1,7 @@
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const cardName = (name) =>
-	name[0].toUpperCase() + name.slice(1, name.length).replace('-', ' ');
+const beautifyName = (name) =>
+	(name[0].toUpperCase() + name.slice(1, name.length)).replaceAll('-', ' ');
 
-export { sleep, cardName };
+const uglifyName = (name) => name.toLowerCase().replaceAll(' ', '-');
+export { sleep, beautifyName, uglifyName };

@@ -1,4 +1,4 @@
-import { cardName } from './utils.js';
+import { beautifyName } from './utils.js';
 import { enemyStat, itemStat } from './data.js';
 
 class Player {
@@ -6,8 +6,13 @@ class Player {
 		this.name = name;
 		this.hp = 10;
 		this.att = 2;
-		this.inventory = ['Letter from mom', 'y', 'z'];
+		this.inventory = ['letter-from-mom', 'y', 'z'];
 		console.log(`welcome to Hell, ${name}`);
+	}
+
+	getDamage(amount) {
+		const newHP = Math.max(this.hp - amount);
+		this.hp = newHP;
 	}
 
 	logStats() {
@@ -15,6 +20,7 @@ class Player {
 	}
 
 	logInventory() {
+		return;
 		console.log(this.inventory.join(', '));
 	}
 	removeItem(itemName) {
@@ -26,14 +32,16 @@ class Player {
 				const additionalHp = itemStat[itemName].hp;
 				this.hp += itemStat[itemName].hp;
 				console.log(`You got ${additionalHp} HP! Now you have ${this.hp} HP`);
-
-				removeItem(itemName);
+				break;
+			case 'letter-from-mom':
+				console.log('bla bla bla bla blab lab lab la');
 				break;
 
 			default:
 				break;
 		}
-		console.log(`Used item ${itemName}`);
+
+		if (itemStat[itemName].oneTime) removeItem(itemName);
 	}
 	loot(itemName) {
 		this.inventory.push(itemName);
@@ -42,7 +50,7 @@ class Player {
 			this.att += att;
 			console.log(`You got +${att} to your attack!`);
 		}
-		console.log(`${cardName(itemName)} added to Inventory`);
+		console.log(`${beautifyName(itemName)} added to Inventory`);
 	}
 }
 

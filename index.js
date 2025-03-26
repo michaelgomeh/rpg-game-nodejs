@@ -3,7 +3,7 @@
 import inquirer from 'inquirer';
 import Player from './Player.js';
 import { Card, Deck } from './card.js';
-import { sleep, cardName } from './utils.js';
+import { sleep, beautifyName, uglifyName } from './utils.js';
 import { enemyStat, itemStat } from './data.js';
 
 console.log('Game is starting!');
@@ -22,9 +22,13 @@ const cardEventTitleGenerator = (card) => {
 	const { name, type } = card;
 	switch (type) {
 		case 'item':
-			return `You found a ${cardName(name)}!`;
+			return `You found a ${beautifyName(name)} with ${JSON.stringify(
+				itemStat[name]
+			)}!`;
 		case 'enemy':
-			return `You faced a ${cardName(name)}!`;
+			return `You faced a ${JSON.stringify(enemyStat[name])} ${beautifyName(
+				name
+			)}!`;
 		default:
 			break;
 	}
@@ -38,11 +42,11 @@ const battle = async (enemyName) => {
 		await sleep(300);
 
 		enemy.hp -= player.att;
-		player.hp -= enemy.att;
+		player.getDamage(enemy.att);
 		console.log(
-			`${enemyName}: ${Math.max(enemy.hp, 0)} HP vs ${player.name}: ${Math.max(
+			`${enemyName}: ${Math.max(enemy.hp, 0)} HP vs ${player.name}: ${
 				player.hp
-			)} HP.`
+			} HP.`
 		);
 	}
 
@@ -104,9 +108,35 @@ const handleDrawCard = async () => {
 };
 
 const handleViewInventory = async () => {
-	player.logInventory();
-	await sleep(2000);
-	showNextTurnMenu();
+	const { selectedItem } = await inquirer.prompt({
+		type: 'list',
+		name: 'selectedItem',
+		message: 'Choose item from inventory',
+		choices: ['< Back', ...player.inventory.map((e) => beautifyName(e))],
+	});
+
+	if (selectedItem === '< Back') showNextTurnMenu();
+	else {
+		await sleep(400);
+		const { action } = await inquirer.prompt({
+			type: 'list',
+			name: 'action',
+			message: `What would you like to do with ${selectedItem.toUpperCase()}?`,
+			choices: ['< Back', 'Use', 'Drop'],
+		});
+		switch (action) {
+			case 'Use':
+				await sleep(500);
+				player.useItem(uglifyName(selectedItem));
+				break;
+			case 'Drop':
+				break;
+
+			default:
+		}
+		await sleep(1000);
+		showNextTurnMenu();
+	}
 };
 
 const handleViewStats = async () => {

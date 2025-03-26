@@ -1,6 +1,7 @@
 const itemStat = {
-	sword: { att: 2 },
-	'health-potion': { hp: 6 },
+	sword: { att: 2, oneTime: false },
+	'health-potion': { hp: 6, oneTime: true },
+	'letter-from-mom': { oneTime: false },
 };
 
 const enemyStat = {
