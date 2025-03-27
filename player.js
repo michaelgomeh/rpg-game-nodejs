@@ -16,7 +16,7 @@ class Player {
 	}
 
 	logStats() {
-		console.log(`Mighty ${this.name} has ${this.hp} HP, ${this.att} Attack`);
+		console.log(`Mighty ${this.name} has 💗 ${this.hp}, ${this.att} Attack`);
 	}
 
 	logInventory() {
@@ -31,7 +31,7 @@ class Player {
 			case 'health-potion':
 				const additionalHp = itemStat[itemName].hp;
 				this.hp += itemStat[itemName].hp;
-				console.log(`You got ${additionalHp} HP! Now you have ${this.hp} HP`);
+				console.log(`You got 💗 ${additionalHp}! Now you have 💗 ${this.hp}`);
 				break;
 			case 'letter-from-mom':
 				console.log('bla bla bla bla blab lab lab la');

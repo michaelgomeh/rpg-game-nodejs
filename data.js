@@ -10,7 +10,6 @@ const enemyStat = {
 };
 
 const cards = [
-	{ type: 'item', name: 'nothing' },
 	{ type: 'item', name: 'health-po,tion' },
 	{ type: 'enemy', name: 'wild-wol,f' },
 	{ type: 'item', name: 'sword' },

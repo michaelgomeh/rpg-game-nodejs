@@ -5,8 +5,11 @@ import Player from './Player.js';
 import { Card, Deck } from './card.js';
 import { sleep, beautifyName, uglifyName } from './utils.js';
 import { enemyStat, itemStat } from './data.js';
+import chalk from 'chalk';
 
-console.log('Game is starting!');
+const logTitle = (txt) => console.log(chalk.bgBlue(txt));
+
+logTitle('Game is starting!');
 
 const { name } = await inquirer.prompt({
 	type: 'input',
@@ -26,9 +29,8 @@ const cardEventTitleGenerator = (card) => {
 				itemStat[name]
 			)}!`;
 		case 'enemy':
-			return `You faced a ${JSON.stringify(enemyStat[name])} ${beautifyName(
-				name
-			)}!`;
+			const { att, hp } = enemyStat[name];
+			return `You faced a 💗 ${hp}  💪 ${att}  ${beautifyName(name)}!`;
 		default:
 			break;
 	}
@@ -44,9 +46,9 @@ const battle = async (enemyName) => {
 		enemy.hp -= player.att;
 		player.getDamage(enemy.att);
 		console.log(
-			`${enemyName}: ${Math.max(enemy.hp, 0)} HP vs ${player.name}: ${
+			`${enemyName}: 💗 ${Math.max(enemy.hp, 0)} vs ${player.name}: 💗 ${
 				player.hp
-			} HP.`
+			}.`
 		);
 	}
 
@@ -108,6 +110,7 @@ const handleDrawCard = async () => {
 };
 
 const handleViewInventory = async () => {
+	logTitle('Inventory:');
 	const { selectedItem } = await inquirer.prompt({
 		type: 'list',
 		name: 'selectedItem',
@@ -124,18 +127,21 @@ const handleViewInventory = async () => {
 			message: `What would you like to do with ${selectedItem.toUpperCase()}?`,
 			choices: ['< Back', 'Use', 'Drop'],
 		});
+		await sleep(500);
 		switch (action) {
 			case 'Use':
-				await sleep(500);
 				player.useItem(uglifyName(selectedItem));
 				break;
 			case 'Drop':
 				break;
 
+			case '< Back':
+				break;
+
 			default:
 		}
-		await sleep(1000);
-		showNextTurnMenu();
+		await sleep(500);
+		handleViewInventory();
 	}
 };
 
@@ -153,10 +159,6 @@ const handleChoice = (choice) => {
 
 		case 'Draw a card':
 			handleDrawCard();
-			break;
-
-		case 'Use Item':
-			handleUseItem();
 			break;
 
 		case 'View Inventory':
