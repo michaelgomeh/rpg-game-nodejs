@@ -3,11 +3,10 @@
 import inquirer from 'inquirer';
 import Player from './Player.js';
 import { Card, Deck } from './card.js';
-import { sleep, beautifyName, uglifyName } from './utils.js';
+import { sleep, beautifyName, uglifyName, logTitle } from './utils.js';
 import { enemyStat, itemStat } from './data.js';
 import chalk from 'chalk';
-
-const logTitle = (txt) => console.log(chalk.bgBlue(txt));
+import Enemy from './enemy.js';
 
 logTitle('Game is starting!');
 
@@ -25,12 +24,16 @@ const cardEventTitleGenerator = (card) => {
 	const { name, type } = card;
 	switch (type) {
 		case 'item':
-			return `You found a ${beautifyName(name)} with ${JSON.stringify(
-				itemStat[name]
-			)}!`;
+			const { att: itemAtt, hp: itemHp } = itemStat[name];
+
+			return `You found a ${beautifyName(name)} with ${
+				itemAtt ? `${itemAtt} Attack` : ''
+			} ${itemHp ? `${itemHp} HP` : ''}`;
 		case 'enemy':
-			const { att, hp } = enemyStat[name];
-			return `You faced a 💗 ${hp}  💪 ${att}  ${beautifyName(name)}!`;
+			const { att: enemyAtt, hp: enemyHp } = enemyStat[name];
+			return `You faced a 💗 ${enemyHp}  💪 ${enemyAtt}  ${beautifyName(
+				name
+			)}!`;
 		default:
 			break;
 	}
@@ -38,29 +41,27 @@ const cardEventTitleGenerator = (card) => {
 
 const battle = async (enemyName) => {
 	console.log(`A battle begins! ${player.name} vs ${enemyName} `);
-	const enemy = enemyStat[enemyName];
+	const enemy = new Enemy(enemyName);
 
 	while (player.hp > 0 && enemy.hp > 0) {
 		await sleep(300);
 
-		enemy.hp -= player.att;
+		enemy.getDamage(player.att);
 		player.getDamage(enemy.att);
 		console.log(
-			`${enemyName}: 💗 ${Math.max(enemy.hp, 0)} vs ${player.name}: 💗 ${
-				player.hp
-			}.`
+			`${enemyName}: 💗 ${enemy.hp} vs ${player.name}: 💗 ${player.hp}.`
 		);
 	}
 
 	await sleep(1000);
 
 	if (player.hp <= 0) {
-		console.log('Youre dead');
+		console.log('You are dead 💀. Game Over. ');
 		await sleep(1000);
 
 		process.exit();
 	} else {
-		console.log('You won!');
+		console.log('You won the battle!');
 		await sleep(1000);
 
 		showNextTurnMenu();
@@ -70,19 +71,6 @@ const battle = async (enemyName) => {
 const lootItem = async (itemName) => {
 	player.loot(itemName);
 	await sleep(200);
-	showNextTurnMenu();
-};
-
-const handleUseItem = async () => {
-	const { item } = await inquirer.prompt({
-		type: 'list',
-		name: 'item',
-		message: 'Choose item to consume:',
-		choices: player.inventory,
-	});
-	console.log(`Using ${item}...`);
-	await sleep(500);
-	player.useItem(item);
 	showNextTurnMenu();
 };
 
@@ -184,13 +172,7 @@ const showNextTurnMenu = async () => {
 		type: 'list',
 		name: 'choice',
 		message: 'Choose your next action:',
-		choices: [
-			'Draw a card',
-			'Show stats',
-			'View Inventory',
-			'Use Item',
-			'Exit Game',
-		],
+		choices: ['Draw a card', 'Show stats', 'View Inventory', 'Exit Game'],
 	});
 
 	handleChoice(choice);

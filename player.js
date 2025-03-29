@@ -1,31 +1,22 @@
 import { beautifyName } from './utils.js';
 import { enemyStat, itemStat } from './data.js';
+import Character from './character.js';
 
-class Player {
+class Player extends Character {
 	constructor(name) {
-		this.name = name;
-		this.hp = 10;
-		this.att = 2;
+		super(name, 10, 2);
 		this.inventory = ['letter-from-mom', 'y', 'z'];
 		console.log(`welcome to Hell, ${name}`);
 	}
 
-	getDamage(amount) {
-		const newHP = Math.max(this.hp - amount);
-		this.hp = newHP;
-	}
-
-	logStats() {
-		console.log(`Mighty ${this.name} has 💗 ${this.hp}, ${this.att} Attack`);
-	}
-
 	logInventory() {
-		return;
-		console.log(this.inventory.join(', '));
+		return console.log(this.inventory.join(', '));
 	}
+
 	removeItem(itemName) {
-		this.inventory = this.inventory.filter((e) => e != itemName);
+		this.inventory = this.inventory.filter((item) => item != itemName);
 	}
+
 	useItem(itemName) {
 		switch (itemName) {
 			case 'health-potion':
@@ -48,7 +39,7 @@ class Player {
 		const { att } = itemStat[itemName];
 		if (att) {
 			this.att += att;
-			console.log(`You got +${att} to your attack!`);
+			console.log(`Attack increased by +${att}!`);
 		}
 		console.log(`${beautifyName(itemName)} added to Inventory`);
 	}
