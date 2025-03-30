@@ -1,6 +1,7 @@
-import { beautifyName } from './utils.js';
+import { beautifyName, uglifyName } from './utils.js';
 import { enemyStat, itemStat } from './data.js';
 import Character from './character.js';
+import chalk from 'chalk';
 
 class Player extends Character {
 	constructor(name, inventory) {
@@ -14,7 +15,10 @@ class Player extends Character {
 	}
 
 	removeItem(itemName) {
-		this.inventory = this.inventory.filter((item) => item != itemName);
+		this.inventory = this.inventory.filter(
+			(item) => item != uglifyName(itemName)
+		);
+		console.log(chalk.bgRed(`You dropped ${itemName}`));
 	}
 
 	useItem(itemName) {
