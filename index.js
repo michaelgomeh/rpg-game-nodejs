@@ -4,10 +4,10 @@ import inquirer from 'inquirer';
 import Player from './Player.js';
 import { Card, Deck } from './card.js';
 import { sleep, beautifyName, uglifyName, logTitle } from './utils.js';
-import { enemyStat, itemStat } from './data.js';
+import { enemyStat, itemStat, dialogs } from './data.js';
 import chalk from 'chalk';
 import Enemy from './enemy.js';
-
+import dialog from './dialog.js';
 logTitle('Game is starting!');
 
 const { name } = await inquirer.prompt({
@@ -82,6 +82,8 @@ const handleDrawCard = async () => {
 	console.log(cardEventTitleGenerator(card));
 
 	await sleep(1000);
+
+	if (dialogs[name]) await dialog.startDialog(name);
 
 	switch (type) {
 		case 'enemy':

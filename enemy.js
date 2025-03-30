@@ -1,5 +1,5 @@
 import Character from './character.js';
-import { enemyStat } from './data.js';
+import { enemyStat, dialogs } from './data.js';
 
 class Enemy extends Character {
 	constructor(name) {

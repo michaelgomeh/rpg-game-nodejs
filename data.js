@@ -10,10 +10,24 @@ const enemyStat = {
 };
 
 const cards = [
-	{ type: 'item', name: 'health-po,tion' },
-	{ type: 'enemy', name: 'wild-wol,f' },
+	{ type: 'item', name: 'health-potion' },
+	{ type: 'enemy', name: 'wild-wolf' },
 	{ type: 'item', name: 'sword' },
 	{ type: 'enemy', name: 'bandit' },
 ];
 
-export { itemStat, enemyStat, cards };
+const dialogs = {
+	mariaEncounter: [
+		{ alucard: 'I’ve been waiting for you, Maria.' },
+		{ maria: 'Alucard! You came for me... but why now?' },
+		{ alucard: 'There is no time for explanations... we must act quickly.' },
+		{ maria: 'I understand... let’s go!' },
+	],
+	bandit: [
+		{ enemy: 'You dare challenge me?' },
+		{ player: 'I have no choice, prepare to fight!' },
+		{ enemy: 'Foolish mortal! You will regret this!' },
+	],
+};
+
+export { itemStat, enemyStat, cards, dialogs };
