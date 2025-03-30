@@ -12,4 +12,9 @@ const INVENTORY_ACTIONS: { [key: string]: string } = {
 	DROP: 'Drop',
 };
 
-export { MENU_CHOICES, BACK, INVENTORY_ACTIONS };
+enum CARD_TYPE {
+	ENEMY,
+	ITEM,
+}
+
+export { MENU_CHOICES, BACK, INVENTORY_ACTIONS, CARD_TYPE };

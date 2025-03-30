@@ -1,15 +1,11 @@
+import { CARD_TYPE } from './constants';
 import { cards } from './data';
 
-interface CardData {
-	type: string;
-	name: string;
-}
-
 class Card {
-	type: string;
+	type: CARD_TYPE;
 	name: string;
 
-	constructor(type: string, name: string) {
+	constructor(type: CARD_TYPE, name: string) {
 		this.type = type;
 		this.name = name;
 	}

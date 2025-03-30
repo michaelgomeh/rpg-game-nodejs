@@ -1,3 +1,5 @@
+import { CARD_TYPE } from './constants';
+
 interface ItemStat {
 	att?: number;
 	hp?: number;
@@ -10,7 +12,7 @@ interface EnemyStat {
 }
 
 interface Card {
-	type: 'item' | 'enemy';
+	type: CARD_TYPE;
 	name: string;
 }
 
@@ -34,10 +36,10 @@ const enemyStat: { [key: string]: EnemyStat } = {
 };
 
 const cards: Card[] = [
-	{ type: 'item', name: 'health-potion' },
-	{ type: 'enemy', name: 'wild-wolf' },
-	{ type: 'item', name: 'sword' },
-	{ type: 'enemy', name: 'bandit' },
+	{ type: CARD_TYPE.ITEM, name: 'health-potion' },
+	{ type: CARD_TYPE.ENEMY, name: 'wild-wolf' },
+	{ type: CARD_TYPE.ITEM, name: 'sword' },
+	{ type: CARD_TYPE.ENEMY, name: 'bandit' },
 ];
 
 const dialogs: Dialog = {
