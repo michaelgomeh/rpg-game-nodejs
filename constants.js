@@ -7,4 +7,9 @@ const MENU_CHOICES = {
 
 const BACK = '< Back';
 
-export { MENU_CHOICES, BACK };
+const INVENTORY_ACTIONS = {
+	USE: 'Use',
+	DROP: 'Drop',
+};
+
+export { MENU_CHOICES, BACK, INVENTORY_ACTIONS };

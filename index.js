@@ -7,7 +7,7 @@ import { sleep, beautifyName, uglifyName, logTitle } from './utils.js';
 import { enemyStat, itemStat, dialogs, initialInventory } from './data.js';
 import Enemy from './enemy.js';
 import dialog from './dialog.js';
-import { BACK, MENU_CHOICES } from './constants.js';
+import { BACK, INVENTORY_ACTIONS, MENU_CHOICES } from './constants.js';
 import chalk from 'chalk';
 
 process.on('SIGINT', () => {
@@ -112,14 +112,15 @@ const showItemMenu = async (selectedItem) => {
 		type: 'list',
 		name: 'action',
 		message: `What would you like to do with ${selectedItem.toUpperCase()}?`,
-		choices: [BACK, 'Use', 'Drop'],
+		choices: [BACK, ...Object.values(INVENTORY_ACTIONS)],
 	});
 	await sleep(500);
 	switch (action) {
-		case 'Use':
+		case INVENTORY_ACTIONS.USE:
 			player.useItem(uglifyName(selectedItem));
 			break;
-		case 'Drop':
+		case INVENTORY_ACTIONS.DROP:
+			player.removeItem(selectedItem);
 			break;
 
 		case BACK:
