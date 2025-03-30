@@ -1,21 +1,21 @@
 import inquirer from 'inquirer';
-import { dialogs } from './data.js';
-import readline from 'readline';
-import { log } from 'console';
+import { dialogs } from './data';
 
-const rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout,
-});
+interface DialogMessage {
+	[speaker: string]: string;
+}
 
 class Dialog {
+	static instance: Dialog | null = null;
+	dialogQueue: DialogMessage[] = [];
+
 	constructor() {
 		if (Dialog.instance) return Dialog.instance;
 		Dialog.instance = this;
 		this.dialogQueue = [];
 	}
 
-	async startDialog(dialogKey) {
+	async startDialog(dialogKey: string): Promise<void> {
 		const dialog = dialogs[dialogKey];
 		if (!dialog) {
 			console.log('dialog not found!!!!');

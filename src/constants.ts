@@ -1,4 +1,4 @@
-const MENU_CHOICES = {
+const MENU_CHOICES: { [key: string]: string } = {
 	DRAW_CARD: 'Draw a card',
 	SHOW_STATS: 'Show stats',
 	VIEW_INVENTORY: 'View Inventory',
@@ -7,7 +7,7 @@ const MENU_CHOICES = {
 
 const BACK = '< Back';
 
-const INVENTORY_ACTIONS = {
+const INVENTORY_ACTIONS: { [key: string]: string } = {
 	USE: 'Use',
 	DROP: 'Drop',
 };

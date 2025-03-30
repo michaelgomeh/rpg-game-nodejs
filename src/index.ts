@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 import inquirer from 'inquirer';
-import Player from './Player.js';
-import { Card, Deck } from './card.js';
-import { sleep, beautifyName, uglifyName, logTitle } from './utils.js';
-import { enemyStat, itemStat, dialogs, initialInventory } from './data.js';
-import Enemy from './enemy.js';
-import dialog from './dialog.js';
-import { BACK, INVENTORY_ACTIONS, MENU_CHOICES } from './constants.js';
+import { Card, Deck } from './card';
+import { sleep, beautifyName, uglifyName, logTitle } from './utils';
+import { enemyStat, itemStat, dialogs, initialInventory } from './data';
+import Enemy from './enemy';
+import dialog from './dialog';
+import { BACK, INVENTORY_ACTIONS, MENU_CHOICES } from './constants';
 import chalk from 'chalk';
+import Player from './player';
 
 process.on('SIGINT', () => {
 	console.log('\nGoodbye!');
@@ -17,17 +17,21 @@ process.on('SIGINT', () => {
 
 logTitle('Game is starting!');
 
-const { name } = await inquirer.prompt({
-	type: 'input',
-	default: 'Mike',
-	name: 'name',
-	message: "What's your name, adventurer?",
-});
+const getUserName = async () => {
+	const { name } = await inquirer.prompt({
+		type: 'input',
+		default: 'Mike',
+		name: 'name',
+		message: "What's your name, adventurer?",
+	});
+};
 
-const player = new Player(name, initialInventory);
+const startGame = async () => {};
+
+const player = new Player('getUserName', initialInventory);
 const deck = new Deck();
 
-const cardEventTitleGenerator = (card) => {
+const cardEventTitleGenerator = (card: { name: string; type: string }) => {
 	const { name, type } = card;
 	switch (type) {
 		case 'item':
@@ -46,7 +50,7 @@ const cardEventTitleGenerator = (card) => {
 	}
 };
 
-const battle = async (enemyName) => {
+const battle = async (enemyName: string) => {
 	console.log(`A battle begins! ${player.name} vs ${enemyName} `);
 	const enemy = new Enemy(enemyName);
 
@@ -75,14 +79,14 @@ const battle = async (enemyName) => {
 	}
 };
 
-const lootItem = async (itemName) => {
+const lootItem = async (itemName: string) => {
 	player.loot(itemName);
 	await sleep(200);
 	showNextTurnMenu();
 };
 
 const handleDrawCard = async () => {
-	const card = deck.drawNextCard();
+	const card = deck.drawNextCard() as Card;
 
 	const { name, type } = card;
 
@@ -106,7 +110,7 @@ const handleDrawCard = async () => {
 	}
 };
 
-const showItemMenu = async (selectedItem) => {
+const showItemMenu = async (selectedItem: string) => {
 	await sleep(400);
 	const { action } = await inquirer.prompt({
 		type: 'list',
@@ -151,7 +155,7 @@ const handleViewStats = async () => {
 	showNextTurnMenu();
 };
 
-const handleChoice = (choice) => {
+const handleChoice = (choice: string) => {
 	switch (choice) {
 		case MENU_CHOICES.EXIT_GAME:
 			console.log('Goodbye!');

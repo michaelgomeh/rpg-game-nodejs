@@ -1,8 +1,8 @@
-import Character from './character.js';
-import { enemyStat, dialogs } from './data.js';
+import Character from './character';
+import { enemyStat, dialogs } from './data';
 
 class Enemy extends Character {
-	constructor(name) {
+	constructor(name: string) {
 		const { hp, att } = enemyStat[name];
 		super(name, hp, att);
 	}

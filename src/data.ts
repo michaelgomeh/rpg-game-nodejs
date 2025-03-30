@@ -1,22 +1,46 @@
-const itemStat = {
+interface ItemStat {
+	att?: number;
+	hp?: number;
+	oneTime: boolean;
+}
+
+interface EnemyStat {
+	att: number;
+	hp: number;
+}
+
+interface Card {
+	type: 'item' | 'enemy';
+	name: string;
+}
+
+interface Dialog {
+	[key: string]: Sentence[];
+}
+
+interface Sentence {
+	[key: string]: string;
+}
+
+const itemStat: { [key: string]: ItemStat } = {
 	sword: { att: 2, oneTime: false },
 	'health-potion': { hp: 6, oneTime: true },
 	'letter-from-mom': { oneTime: false },
 };
 
-const enemyStat = {
+const enemyStat: { [key: string]: EnemyStat } = {
 	'wild-wolf': { att: 3, hp: 6 },
 	bandit: { att: 1, hp: 4 },
 };
 
-const cards = [
+const cards: Card[] = [
 	{ type: 'item', name: 'health-potion' },
 	{ type: 'enemy', name: 'wild-wolf' },
 	{ type: 'item', name: 'sword' },
 	{ type: 'enemy', name: 'bandit' },
 ];
 
-const dialogs = {
+const dialogs: Dialog = {
 	mariaEncounter: [
 		{ alucard: 'I’ve been waiting for you, Maria.' },
 		{ maria: 'Alucard! You came for me... but why now?' },
@@ -30,6 +54,6 @@ const dialogs = {
 	],
 };
 
-const initialInventory = ['letter-from-mom'];
+const initialInventory: string[] = ['letter-from-mom'];
 
 export { itemStat, enemyStat, cards, dialogs, initialInventory };
