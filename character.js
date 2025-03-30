@@ -11,7 +11,7 @@ class Character {
 	}
 
 	logStats() {
-		console.log(`${this.name} - 💗 ${this.hp}, ${this.att} Attack`);
+		console.log(`${this.name} - 💗 ${this.hp}, 💪 ${this.att}`);
 	}
 }
 

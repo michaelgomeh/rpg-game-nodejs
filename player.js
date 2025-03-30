@@ -3,9 +3,9 @@ import { enemyStat, itemStat } from './data.js';
 import Character from './character.js';
 
 class Player extends Character {
-	constructor(name) {
+	constructor(name, inventory) {
 		super(name, 10, 2);
-		this.inventory = ['letter-from-mom', 'y', 'z'];
+		this.inventory = inventory;
 		console.log(`welcome to Hell, ${name}`);
 	}
 
@@ -39,7 +39,7 @@ class Player extends Character {
 		const { att } = itemStat[itemName];
 		if (att) {
 			this.att += att;
-			console.log(`Attack increased by +${att}!`);
+			console.log(`💪 increased by +${att}!`);
 		}
 		console.log(`${beautifyName(itemName)} added to Inventory`);
 	}

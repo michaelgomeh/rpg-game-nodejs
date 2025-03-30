@@ -30,4 +30,6 @@ const dialogs = {
 	],
 };
 
-export { itemStat, enemyStat, cards, dialogs };
+const initialInventory = ['letter-from-mom'];
+
+export { itemStat, enemyStat, cards, dialogs, initialInventory };

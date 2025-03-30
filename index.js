@@ -4,7 +4,7 @@ import inquirer from 'inquirer';
 import Player from './Player.js';
 import { Card, Deck } from './card.js';
 import { sleep, beautifyName, uglifyName, logTitle } from './utils.js';
-import { enemyStat, itemStat, dialogs } from './data.js';
+import { enemyStat, itemStat, dialogs, initialInventory } from './data.js';
 import chalk from 'chalk';
 import Enemy from './enemy.js';
 import dialog from './dialog.js';
@@ -17,7 +17,7 @@ const { name } = await inquirer.prompt({
 	message: "What's your name, adventurer?",
 });
 
-const player = new Player(name);
+const player = new Player(name, initialInventory);
 const deck = new Deck();
 
 const cardEventTitleGenerator = (card) => {
@@ -27,8 +27,8 @@ const cardEventTitleGenerator = (card) => {
 			const { att: itemAtt, hp: itemHp } = itemStat[name];
 
 			return `You found a ${beautifyName(name)} with ${
-				itemAtt ? `${itemAtt} Attack` : ''
-			} ${itemHp ? `${itemHp} HP` : ''}`;
+				itemAtt ? `💪 ${itemAtt}` : ''
+			} ${itemHp ? `💗 ${itemHp}` : ''}`;
 		case 'enemy':
 			const { att: enemyAtt, hp: enemyHp } = enemyStat[name];
 			return `You faced a 💗 ${enemyHp}  💪 ${enemyAtt}  ${beautifyName(
