@@ -1,14 +1,15 @@
 {
 	"compilerOptions": {
 		"target": "ESNext",
-		"module": "ESNext",
+		"module": "commonjs",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
 		"outDir": "./dist",
 		"rootDir": "./src",
+		"sourceMap": true,
 		"resolveJsonModule": true,
-		"moduleResolution": "bundler"
+		"moduleResolution": "node"
 	},
 	"include": ["src/**/*.ts"],
 	"exclude": ["node_modules"]

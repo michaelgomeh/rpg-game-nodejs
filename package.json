@@ -1,8 +1,9 @@
 {
 	"name": "rpg-game-nodejs",
 	"version": "1.0.0",
-	"main": "./dist/index.js",
-	"scripts": {},
+	"scripts": {
+		"dev": "npx tsc && rpg-game"
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
@@ -10,7 +11,6 @@
 	"bin": {
 		"rpg-game": "./dist/index.js"
 	},
-	"type": "module",
 	"dependencies": {
 		"chalk": "^5.4.1",
 		"figlet": "^1.8.0",
