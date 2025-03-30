@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "ES6", // or ES2020 or later
+		"module": "ES6", // CommonJS for Node.js compatibility
+		"strict": true, // Enable strict type-checking options
+		"esModuleInterop": true, // Allow default imports from modules without default exports
+		"skipLibCheck": true, // Skip library type-checking for faster builds
+		"outDir": "./dist", // Output folder for compiled JavaScript
+		"rootDir": "./src" // Root directory for your TypeScript files
+	},
+	"include": ["src/**/*.ts"], // Include all TypeScript files under the src directory
+	"exclude": ["node_modules"] // Exclude node_modules folder
+}
