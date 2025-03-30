@@ -5,9 +5,9 @@ import Player from './Player.js';
 import { Card, Deck } from './card.js';
 import { sleep, beautifyName, uglifyName, logTitle } from './utils.js';
 import { enemyStat, itemStat, dialogs, initialInventory } from './data.js';
-import chalk from 'chalk';
 import Enemy from './enemy.js';
 import dialog from './dialog.js';
+import { BACK, MENU_CHOICES } from './constants.js';
 logTitle('Game is starting!');
 
 const { name } = await inquirer.prompt({
@@ -99,40 +99,42 @@ const handleDrawCard = async () => {
 	}
 };
 
+const showItemMenu = async (selectedItem) => {
+	await sleep(400);
+	const { action } = await inquirer.prompt({
+		type: 'list',
+		name: 'action',
+		message: `What would you like to do with ${selectedItem.toUpperCase()}?`,
+		choices: [BACK, 'Use', 'Drop'],
+	});
+	await sleep(500);
+	switch (action) {
+		case 'Use':
+			player.useItem(uglifyName(selectedItem));
+			break;
+		case 'Drop':
+			break;
+
+		case BACK:
+			break;
+
+		default:
+	}
+	await sleep(500);
+	handleViewInventory();
+};
+
 const handleViewInventory = async () => {
 	logTitle('Inventory:');
 	const { selectedItem } = await inquirer.prompt({
 		type: 'list',
 		name: 'selectedItem',
 		message: 'Choose item from inventory',
-		choices: ['< Back', ...player.inventory.map((e) => beautifyName(e))],
+		choices: [BACK, ...player.inventory.map((e) => beautifyName(e))],
 	});
 
-	if (selectedItem === '< Back') showNextTurnMenu();
-	else {
-		await sleep(400);
-		const { action } = await inquirer.prompt({
-			type: 'list',
-			name: 'action',
-			message: `What would you like to do with ${selectedItem.toUpperCase()}?`,
-			choices: ['< Back', 'Use', 'Drop'],
-		});
-		await sleep(500);
-		switch (action) {
-			case 'Use':
-				player.useItem(uglifyName(selectedItem));
-				break;
-			case 'Drop':
-				break;
-
-			case '< Back':
-				break;
-
-			default:
-		}
-		await sleep(500);
-		handleViewInventory();
-	}
+	if (selectedItem === BACK) showNextTurnMenu();
+	else showItemMenu(selectedItem);
 };
 
 const handleViewStats = async () => {
@@ -143,19 +145,19 @@ const handleViewStats = async () => {
 
 const handleChoice = (choice) => {
 	switch (choice) {
-		case 'Exit Game':
+		case MENU_CHOICES.EXIT_GAME:
 			console.log('Goodbye!');
 			process.exit();
 
-		case 'Draw a card':
+		case MENU_CHOICES.DRAW_CARD:
 			handleDrawCard();
 			break;
 
-		case 'View Inventory':
+		case MENU_CHOICES.VIEW_INVENTORY:
 			handleViewInventory();
 			break;
 
-		case 'Show stats':
+		case MENU_CHOICES.SHOW_STATS:
 			handleViewStats();
 			break;
 
@@ -174,7 +176,7 @@ const showNextTurnMenu = async () => {
 		type: 'list',
 		name: 'choice',
 		message: 'Choose your next action:',
-		choices: ['Draw a card', 'Show stats', 'View Inventory', 'Exit Game'],
+		choices: Object.values(MENU_CHOICES),
 	});
 
 	handleChoice(choice);
