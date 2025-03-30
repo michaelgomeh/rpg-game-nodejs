@@ -8,6 +8,13 @@ import { enemyStat, itemStat, dialogs, initialInventory } from './data.js';
 import Enemy from './enemy.js';
 import dialog from './dialog.js';
 import { BACK, MENU_CHOICES } from './constants.js';
+import chalk from 'chalk';
+
+process.on('SIGINT', () => {
+	console.log('\nGoodbye!');
+	process.exit();
+});
+
 logTitle('Game is starting!');
 
 const { name } = await inquirer.prompt({
@@ -56,12 +63,12 @@ const battle = async (enemyName) => {
 	await sleep(1000);
 
 	if (player.hp <= 0) {
-		console.log('You are dead 💀. Game Over. ');
+		console.log(chalk.bgRed('You are dead 💀. Game Over. '));
 		await sleep(1000);
 
 		process.exit();
 	} else {
-		console.log('You won the battle!');
+		console.log(chalk.bgGreen('You won the battle!'));
 		await sleep(1000);
 
 		showNextTurnMenu();

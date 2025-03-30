@@ -21,7 +21,7 @@ class Player extends Character {
 		switch (itemName) {
 			case 'health-potion':
 				const additionalHp = itemStat[itemName].hp;
-				this.hp += itemStat[itemName].hp;
+				this.hp += additionalHp;
 				console.log(`You got 💗 ${additionalHp}! Now you have 💗 ${this.hp}`);
 				break;
 			case 'letter-from-mom':
