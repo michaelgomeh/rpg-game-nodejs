@@ -6,7 +6,13 @@ import { sleep, beautifyName, uglifyName, logTitle } from './utils';
 import { enemyStat, itemStat, dialogs, initialInventory } from './data';
 import Enemy from './enemy';
 import dialog from './dialog';
-import { BACK, CARD_TYPE, INVENTORY_ACTIONS, MENU_CHOICES } from './constants';
+import {
+	BACK,
+	BATTLE_ACTIONS,
+	CARD_TYPE,
+	INVENTORY_ACTIONS,
+	MENU_CHOICES,
+} from './constants';
 import chalk from 'chalk';
 import Player from './player';
 
@@ -31,6 +37,18 @@ class Game {
 
 	async init() {
 		logTitle('Game is starting!');
+		console.log(`
+			.d8888b.  888      8888888       .d8888b.                                  
+			d88P  Y88b 888        888        d88P  Y88b                                 
+			888    888 888        888        888    888                                 
+			888        888        888        888         8888b.  88888b.d88b.   .d88b.  
+			888        888        888        888  88888     "88b 888 "888 "88b d8P  Y8b 
+			888    888 888        888        888    888 .d888888 888  888  888 88888888 
+			Y88b  d88P 888        888        Y88b  d88P 888  888 888  888  888 Y8b.     
+			 "Y8888P"  88888888 8888888       "Y8888P88 "Y888888 888  888  888  "Y8888
+			 
+			 
+			 `);
 		const playerName = await this.getUserName();
 		this.player = new Player(playerName, initialInventory);
 		this.showNextTurnMenu();
@@ -78,7 +96,48 @@ class Game {
 		while (this.player.hp > 0 && enemy.hp > 0) {
 			await sleep(300);
 
-			enemy.getDamage(this.player.att);
+			const { action } = await inquirer.prompt([
+				{
+					message: 'Choose action',
+					type: 'list',
+					name: 'action',
+					choices: Object.values(BATTLE_ACTIONS),
+				},
+			]);
+
+			switch (action) {
+				case BATTLE_ACTIONS.ATTACK:
+					enemy.getDamage(this.player.att);
+					break;
+
+				case BATTLE_ACTIONS.USE_ITEM:
+					const { selectedItem } = await inquirer.prompt([
+						{
+							message: 'Choose Item',
+							name: 'selectedItem',
+							type: 'list',
+							choices: this.player.inventory,
+						},
+					]);
+					this.player.useItem(selectedItem);
+					break;
+
+				case BATTLE_ACTIONS.RUN_AWAY:
+					if (Math.random() > 0.5) {
+						console.log('You ran away successfully!');
+						this.showNextTurnMenu();
+						return;
+					} else {
+						console.log('You failed! the battle continues!');
+					}
+					break;
+
+				default:
+					break;
+			}
+
+			await sleep(1000);
+
 			this.player.getDamage(enemy.att);
 			console.log(
 				`${enemyName}: 💗 ${enemy.hp} vs ${this.player.name}: 💗 ${this.player.hp}.`

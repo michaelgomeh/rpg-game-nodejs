@@ -12,6 +12,7 @@ class Character {
 	getDamage(amount: number): void {
 		const newHP = Math.max(this.hp - amount, 0);
 		this.hp = newHP;
+		console.log(`${this.name} got 🩸 ${amount}`);
 	}
 
 	logStats(): void {

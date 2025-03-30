@@ -28,7 +28,7 @@ class Player extends Character {
 		this.inventory = this.inventory.filter(
 			(item) => item != uglifyName(itemName)
 		);
-		console.log(chalk.bgRed(`You dropped ${itemName}`));
+		console.log(chalk.bgRed(`You lost ${itemName}`));
 	}
 
 	useItem(itemName: string): void {

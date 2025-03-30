@@ -56,6 +56,6 @@ const dialogs: Dialog = {
 	],
 };
 
-const initialInventory: string[] = ['letter-from-mom'];
+const initialInventory: string[] = ['letter-from-mom', 'health-potion'];
 
 export { itemStat, enemyStat, cards, dialogs, initialInventory };
