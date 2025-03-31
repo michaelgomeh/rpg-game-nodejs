@@ -14,8 +14,10 @@ import {
 	MENU_CHOICES,
 } from './constants';
 import chalk from 'chalk';
-import player from './player';
+import Player from './player';
 import { CardName } from './types/types';
+
+let player: Player;
 
 class Game {
 	deck: Deck;
@@ -50,15 +52,13 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
              
 			 `);
 		const playerName = await this.getUserName();
-		player.setName(playerName);
 		const { className } = await inquirer.prompt({
 			type: 'list',
 			name: 'className',
 			message: 'Choose your class:',
 			choices: ['Warrior', 'Mage', 'Thief'],
 		});
-		player.setClass(className);
-		player.initInventory(initialInventory());
+		player = new Player(playerName, className);
 		this.showNextTurnMenu();
 	}
 

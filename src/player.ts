@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import Character from './character';
 import { beautifyName, uglifyName } from './utils';
-import { getCard } from './data';
+import { getCard, initialInventory } from './data';
 import { ItemCard } from './card';
 import { CardName } from './types/types';
 
@@ -11,21 +11,11 @@ class Player extends Character {
 	specialAtt = '';
 	runAwayChance = 0.5;
 
-	constructor(name: string) {
+	constructor(name: string, className: string) {
 		super(name, 10, 2);
-	}
-
-	setName(name: string) {
-		this.name = name;
-		console.log(`welcome to Hell, ${name}`);
-	}
-
-	initInventory(items: ItemCard[]) {
-		this.inventory = items;
-	}
-
-	setClass(className: string) {
+		console.log(`welcome to Hell, ${name}the ${className}`);
 		this.class = className;
+		this.inventory = initialInventory();
 		switch (className) {
 			case 'Warrior':
 				this.att += 2;
@@ -97,7 +87,4 @@ runAwayChance: ${this.runAwayChance}
 `);
 	}
 }
-
-const player = new Player('temp');
-
-export default player;
+export default Player;
