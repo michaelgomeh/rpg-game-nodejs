@@ -7,11 +7,19 @@ import { ItemCard } from './card';
 type Inventory = ItemCard[];
 
 class Player extends Character {
-	inventory: Inventory;
+	inventory: Inventory = [];
 
-	constructor(name: string, inventory: Inventory) {
+	constructor(name: string) {
 		super(name, 10, 2);
-		this.inventory = inventory;
+	}
+
+	setName(name: string) {
+		this.name = name;
+		console.log(`welcome to Hell, ${name}`);
+	}
+
+	initInventory(items: ItemCard[]) {
+		this.inventory = items;
 	}
 
 	logInventory(): void {
@@ -57,4 +65,6 @@ class Player extends Character {
 	}
 }
 
-export default Player;
+const player = new Player('temp');
+
+export default player;

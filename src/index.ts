@@ -14,14 +14,12 @@ import {
 	MENU_CHOICES,
 } from './constants';
 import chalk from 'chalk';
-import Player from './player';
+import player from './player';
 
 class Game {
-	player: Player;
 	deck: Deck;
 
 	constructor() {
-		this.player = new Player('temp', []);
 		this.deck = new Deck();
 	}
 
@@ -50,8 +48,8 @@ class Game {
 			 
 			 `);
 		const playerName = await this.getUserName();
-		this.player = new Player(playerName, initialInventory());
-		console.log(`welcome to Hell, ${playerName}`);
+		player.setName(playerName);
+		player.initInventory(initialInventory());
 		this.showNextTurnMenu();
 	}
 
@@ -95,9 +93,9 @@ class Game {
 
 	async battle(enemyCard: EnemyCard) {
 		const enemy = new Enemy(enemyCard);
-		console.log(`A battle begins! ${this.player.name} vs ${enemy.name} `);
+		console.log(`A battle begins! ${player.name} vs ${enemy.name} `);
 
-		while (this.player.hp > 0 && enemy.hp > 0) {
+		while (player.hp > 0 && enemy.hp > 0) {
 			await sleep(300);
 
 			const { action } = await inquirer.prompt([
@@ -111,7 +109,7 @@ class Game {
 
 			switch (action) {
 				case BATTLE_ACTIONS.ATTACK:
-					enemy.getDamage(this.player.att);
+					enemy.getDamage(player.att);
 					break;
 
 				case BATTLE_ACTIONS.USE_ITEM:
@@ -120,10 +118,10 @@ class Game {
 							message: 'Choose Item',
 							name: 'selectedItem',
 							type: 'list',
-							choices: this.player.inventory.map((e) => e.name),
+							choices: player.inventory.map((e) => e.name),
 						},
 					]);
-					this.player.useItem(selectedItem);
+					player.useItem(selectedItem);
 					break;
 
 				case BATTLE_ACTIONS.RUN_AWAY:
@@ -142,15 +140,15 @@ class Game {
 
 			await sleep(1000);
 
-			this.player.getDamage(enemy.att);
+			player.getDamage(enemy.att);
 			console.log(
-				`${enemy.name}: 💗 ${enemy.hp} vs ${this.player.name}: 💗 ${this.player.hp}.`
+				`${enemy.name}: 💗 ${enemy.hp} vs ${player.name}: 💗 ${player.hp}.`
 			);
 		}
 
 		await sleep(1000);
 
-		if (this.player.hp <= 0) {
+		if (player.hp <= 0) {
 			console.log(chalk.bgRed('You are dead 💀. Game Over. '));
 			await sleep(1000);
 
@@ -164,7 +162,7 @@ class Game {
 	}
 
 	lootItem = async (itemName: string) => {
-		this.player.loot(itemName);
+		player.loot(itemName);
 		await sleep(200);
 		this.showNextTurnMenu();
 	};
@@ -205,10 +203,10 @@ class Game {
 		await sleep(500);
 		switch (action) {
 			case INVENTORY_ACTIONS.USE:
-				this.player.useItem(uglifyName(selectedItem));
+				player.useItem(uglifyName(selectedItem));
 				break;
 			case INVENTORY_ACTIONS.DROP:
-				this.player.removeItem(selectedItem);
+				player.removeItem(selectedItem);
 				break;
 
 			case BACK:
@@ -226,10 +224,7 @@ class Game {
 			type: 'list',
 			name: 'selectedItem',
 			message: 'Choose item from inventory',
-			choices: [
-				BACK,
-				...this.player.inventory.map((e) => beautifyName(e.name)),
-			],
+			choices: [BACK, ...player.inventory.map((e) => beautifyName(e.name))],
 		});
 
 		if (selectedItem === BACK) this.showNextTurnMenu();
@@ -237,7 +232,7 @@ class Game {
 	};
 
 	handleViewStats = async () => {
-		this.player.logStats();
+		player.logStats();
 		await sleep(2000);
 		this.showNextTurnMenu();
 	};
