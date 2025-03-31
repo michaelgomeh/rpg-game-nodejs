@@ -3,8 +3,8 @@ import { CARD_TYPE } from './constants';
 import { CardName, Dialog } from './types/types';
 
 const cards: Readonly<Record<CardName, EnemyCard | ItemCard>> = {
-	'wild-wolf': { type: CARD_TYPE.ENEMY, name: 'wild-wolf', att: 3, hp: 6 },
-	bandit: { type: CARD_TYPE.ENEMY, name: 'bandit', att: 1, hp: 4 },
+	'wild-wolf': { type: CARD_TYPE.ENEMY, name: 'wild-wolf', att: 3, hp: 9 },
+	bandit: { type: CARD_TYPE.ENEMY, name: 'bandit', att: 2, hp: 6 },
 	sword: { type: CARD_TYPE.ITEM, name: 'sword', att: 2, oneTime: false },
 	'travelers-map': {
 		type: CARD_TYPE.ITEM,

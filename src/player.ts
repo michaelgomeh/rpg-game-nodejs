@@ -5,10 +5,11 @@ import { getCard } from './data';
 import { ItemCard } from './card';
 import { CardName } from './types/types';
 
-type Inventory = ItemCard[];
-
 class Player extends Character {
-	inventory: Inventory = [];
+	inventory: ItemCard[] = [];
+	class: string = 'default';
+	specialAtt = '';
+	runAwayChance = 0.5;
 
 	constructor(name: string) {
 		super(name, 10, 2);
@@ -21,6 +22,27 @@ class Player extends Character {
 
 	initInventory(items: ItemCard[]) {
 		this.inventory = items;
+	}
+
+	setClass(className: string) {
+		this.class = className;
+		switch (className) {
+			case 'Warrior':
+				this.att += 2;
+				this.specialAtt = 'DoubleAttack';
+				break;
+
+			case 'Mage':
+				this.specialAtt = 'Fireball';
+				break;
+
+			case 'Thief':
+				this.runAwayChance = 0.7;
+				this.specialAtt = 'Steal';
+
+			default:
+				break;
+		}
 	}
 
 	logInventory(): void {
@@ -59,12 +81,20 @@ class Player extends Character {
 		const item = getCard(itemName) as ItemCard;
 
 		this.inventory.push(item);
+		console.log(chalk.bgGreen(`${beautifyName(itemName)} added to Inventory`));
 		const { att } = item;
 		if (att) {
 			this.att += att;
 			console.log(`💪 increased by +${att}!`);
 		}
-		console.log(`${beautifyName(itemName)} added to Inventory`);
+	}
+
+	logStats(): void {
+		console.log(`
+${this.name} - 💗 ${this.hp}, 💪 ${this.att} 
+specialAtt: ${this.specialAtt}
+runAwayChance: ${this.runAwayChance}
+`);
 	}
 }
 

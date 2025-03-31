@@ -14,10 +14,6 @@ class Character {
 		this.hp = newHP;
 		console.log(`${this.name} got 🩸 ${amount}`);
 	}
-
-	logStats(): void {
-		console.log(`${this.name} - 💗 ${this.hp}, 💪 ${this.att}`);
-	}
 }
 
 export default Character;

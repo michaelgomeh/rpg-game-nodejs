@@ -51,6 +51,13 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
 			 `);
 		const playerName = await this.getUserName();
 		player.setName(playerName);
+		const { className } = await inquirer.prompt({
+			type: 'list',
+			name: 'className',
+			message: 'Choose your class:',
+			choices: ['Warrior', 'Mage', 'Thief'],
+		});
+		player.setClass(className);
 		player.initInventory(initialInventory());
 		this.showNextTurnMenu();
 	}
@@ -126,8 +133,30 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
 					player.useItem(selectedItem);
 					break;
 
+				case BATTLE_ACTIONS.SPECIAL_ATTACK:
+					switch (player.class) {
+						case 'Warrior':
+							console.log('DoubleAttack');
+							enemy.getDamage(player.att);
+							await sleep(300);
+							enemy.getDamage(player.att);
+							break;
+
+						case 'Mage':
+							console.log('Fireball! 🔥');
+							enemy.getDamage(Math.floor(Math.random() * 4 * player.att));
+							break;
+
+						case 'Thief':
+							console.log('Stealing');
+							if (Math.random() > 0.5) player.loot('health-potion');
+						default:
+							break;
+					}
+					break;
+
 				case BATTLE_ACTIONS.RUN_AWAY:
-					if (Math.random() > 0.5) {
+					if (Math.random() > 1 - player.runAwayChance) {
 						console.log('You ran away successfully!');
 						this.showNextTurnMenu();
 						return;
