@@ -1,13 +1,6 @@
 import { Card, EnemyCard, ItemCard } from './card';
 import { CARD_TYPE } from './constants';
-
-interface Dialog {
-	[key: string]: Sentence[];
-}
-
-interface Sentence {
-	[key: string]: string;
-}
+import { Dialog } from './types/types';
 
 const cards: (EnemyCard | ItemCard)[] = [
 	{ type: CARD_TYPE.ENEMY, name: 'wild-wolf', att: 3, hp: 6 },
@@ -33,22 +26,22 @@ const cards: (EnemyCard | ItemCard)[] = [
 
 const deck = ['bandit', 'sword', 'wild-wolf', 'health-potion'];
 
-const getCard: any = (name: string) => {
+const getCard: (name: string) => ItemCard | EnemyCard = (name: string) => {
 	const card = cards.find((e) => e.name === name);
-	return card;
+	return card!;
 };
 
 const dialogs: Dialog = {
 	mariaEncounter: [
-		{ $player: 'I’ve been waiting for you, Maria.' },
-		{ maria: '$player! You came for me... but why now?' },
-		{ $player: 'There is no time for explanations... we must act quickly.' },
-		{ maria: 'I understand... let’s go!' },
+		['$player', 'I’ve been waiting for you, Maria.'],
+		['maria', '$player! You came for me... but why now?'],
+		['$player', 'There is no time for explanations... we must act quickly.'],
+		['maria', 'I understand... let’s go!'],
 	],
 	bandit: [
-		{ $enemy: 'You dare challenge me?' },
-		{ $player: 'I have no choice, prepare to fight!' },
-		{ $enemy: 'Foolish mortal! You will regret this!' },
+		['bandit', 'You dare challenge me?'],
+		['$player', 'I have no choice, prepare to fight!'],
+		['bandit', 'Foolish mortal! You will regret this!'],
 	],
 };
 

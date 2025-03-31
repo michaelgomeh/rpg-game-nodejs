@@ -1,13 +1,11 @@
 import inquirer from 'inquirer';
 import { dialogs } from './data';
-
-interface DialogMessage {
-	[speaker: string]: string;
-}
+import player from './player';
+import { DialogSentence } from './types/types';
 
 class Dialog {
 	static instance: Dialog | null = null;
-	dialogQueue: DialogMessage[] = [];
+	dialogQueue: DialogSentence[] = [];
 
 	constructor() {
 		if (Dialog.instance) return Dialog.instance;
@@ -24,19 +22,20 @@ class Dialog {
 
 		this.dialogQueue = dialog;
 
-		await inquirer.prompt(
-			this.dialogQueue.map((e) => {
-				const speaker = Object.keys(e)[0];
-				const message = `${speaker}: ${e[speaker]}`;
+		const sentences = this.dialogQueue.map((e) => {
+			const speaker = e[0] === '$player' ? player.name : e[0];
 
-				return Object({
-					message: message,
-					default: 'Press Enter to continue...',
-					transformer: () => '',
-					type: 'input',
-				});
-			})
-		);
+			const message = `${speaker}: ${e[1]}`;
+
+			return Object({
+				message: message,
+				default: 'Press Enter to continue...',
+				transformer: () => '',
+				type: 'input',
+			});
+		});
+
+		await inquirer.prompt(sentences);
 	}
 }
 
