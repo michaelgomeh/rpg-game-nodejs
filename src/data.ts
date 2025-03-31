@@ -1,33 +1,33 @@
 import { Card, EnemyCard, ItemCard } from './card';
 import { CARD_TYPE } from './constants';
-import { Dialog } from './types/types';
+import { CardName, Dialog } from './types/types';
 
-const cards: (EnemyCard | ItemCard)[] = [
-	{ type: CARD_TYPE.ENEMY, name: 'wild-wolf', att: 3, hp: 6 },
-	{ type: CARD_TYPE.ENEMY, name: 'bandit', att: 1, hp: 4 },
-	{ type: CARD_TYPE.ITEM, name: 'sword', att: 2, oneTime: false },
-	{
+const cards: Readonly<Record<CardName, EnemyCard | ItemCard>> = {
+	'wild-wolf': { type: CARD_TYPE.ENEMY, name: 'wild-wolf', att: 3, hp: 6 },
+	bandit: { type: CARD_TYPE.ENEMY, name: 'bandit', att: 1, hp: 4 },
+	sword: { type: CARD_TYPE.ITEM, name: 'sword', att: 2, oneTime: false },
+	'travelers-map': {
 		type: CARD_TYPE.ITEM,
 		name: 'travelers-map',
 		oneTime: false,
 	},
-	{
+	'health-potion': {
 		type: CARD_TYPE.ITEM,
 		name: 'health-potion',
 		hp: 6,
 		oneTime: true,
 	},
-	{
+	'letter-from-mom': {
 		type: CARD_TYPE.ITEM,
 		name: 'letter-from-mom',
 		oneTime: false,
 	},
-];
+} as const;
 
-const deck = ['bandit', 'sword', 'wild-wolf', 'health-potion'];
+const deck: CardName[] = ['bandit', 'sword', 'wild-wolf', 'health-potion'];
 
-const getCard: (name: string) => ItemCard | EnemyCard = (name: string) => {
-	const card = cards.find((e) => e.name === name);
+const getCard: (name: CardName) => ItemCard | EnemyCard = (name: CardName) => {
+	const card = cards[name];
 	return card!;
 };
 
@@ -46,7 +46,11 @@ const dialogs: Dialog = {
 };
 
 const initialInventory: () => ItemCard[] = () => {
-	const cards = ['letter-from-mom', 'travelers-map', 'health-potion'];
+	const cards: CardName[] = [
+		'letter-from-mom',
+		'travelers-map',
+		'health-potion',
+	];
 	return cards.map((c) => getCard(c) as ItemCard);
 };
 

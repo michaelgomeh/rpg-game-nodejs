@@ -1,19 +1,18 @@
 import { CARD_TYPE } from './constants';
 import { deck, getCard } from './data';
+import { CardName } from './types/types';
 
 interface Card {
 	type: CARD_TYPE;
-	name: string;
+	name: CardName;
 }
 
 interface EnemyCard extends Card {
-	name: string;
 	att: number;
 	hp: number;
 }
 
 interface ItemCard extends Card {
-	name: string;
 	att?: number;
 	hp?: number;
 	oneTime: boolean;

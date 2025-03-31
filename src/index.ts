@@ -15,6 +15,7 @@ import {
 } from './constants';
 import chalk from 'chalk';
 import player from './player';
+import { CardName } from './types/types';
 
 class Game {
 	deck: Deck;
@@ -162,7 +163,7 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
 		}
 	}
 
-	lootItem = async (itemName: string) => {
+	lootItem = async (itemName: CardName) => {
 		player.loot(itemName);
 		await sleep(200);
 		this.showNextTurnMenu();
@@ -204,7 +205,7 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
 		await sleep(500);
 		switch (action) {
 			case INVENTORY_ACTIONS.USE:
-				player.useItem(uglifyName(selectedItem));
+				player.useItem(uglifyName(selectedItem) as CardName);
 				break;
 			case INVENTORY_ACTIONS.DROP:
 				player.removeItem(selectedItem);

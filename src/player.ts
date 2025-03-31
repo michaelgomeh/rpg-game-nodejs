@@ -3,6 +3,7 @@ import Character from './character';
 import { beautifyName, uglifyName } from './utils';
 import { getCard } from './data';
 import { ItemCard } from './card';
+import { CardName } from './types/types';
 
 type Inventory = ItemCard[];
 
@@ -33,7 +34,7 @@ class Player extends Character {
 		console.log(chalk.bgRed(`You lost ${itemName}`));
 	}
 
-	useItem(itemName: string): void {
+	useItem(itemName: CardName): void {
 		const item = getCard(itemName) as ItemCard;
 		switch (itemName) {
 			case 'health-potion':
@@ -42,7 +43,9 @@ class Player extends Character {
 				console.log(`You got 💗 ${additionalHp}! Now you have 💗 ${this.hp}`);
 				break;
 			case 'letter-from-mom':
-				console.log('bla bla bla bla blab lab lab la');
+				console.log(
+					'A heartfelt letter sent by your mother, filled with love and encouragement. It serves as a reminder of home, and her words offer comfort and strength in your journey.'
+				);
 				break;
 
 			default:
@@ -52,7 +55,7 @@ class Player extends Character {
 		if (item.oneTime) this.removeItem(itemName);
 	}
 
-	loot(itemName: string): void {
+	loot(itemName: CardName): void {
 		const item = getCard(itemName) as ItemCard;
 
 		this.inventory.push(item);
