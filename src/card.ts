@@ -23,7 +23,6 @@ class Deck {
 	cards: Card[];
 	constructor() {
 		this.cards = [...deck.map((e) => getCard(e))].reverse();
-		console.log('deck is: ', this.cards);
 	}
 
 	drawNextCard(): Card | undefined {
