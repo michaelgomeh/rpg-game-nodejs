@@ -1,15 +1,10 @@
-import { enemyStat, itemStat } from './data';
 import chalk from 'chalk';
 import Character from './character';
 import { beautifyName, uglifyName } from './utils';
+import { getCard } from './data';
+import { ItemCard } from './card';
 
-type ItemStat = {
-	hp?: number;
-	att?: number;
-	oneTime?: boolean;
-};
-
-type Inventory = string[];
+type Inventory = ItemCard[];
 
 class Player extends Character {
 	inventory: Inventory;
@@ -17,7 +12,6 @@ class Player extends Character {
 	constructor(name: string, inventory: Inventory) {
 		super(name, 10, 2);
 		this.inventory = inventory;
-		console.log(`welcome to Hell, ${name}`);
 	}
 
 	logInventory(): void {
@@ -26,15 +20,16 @@ class Player extends Character {
 
 	removeItem(itemName: string): void {
 		this.inventory = this.inventory.filter(
-			(item) => item != uglifyName(itemName)
+			(item) => item.name != uglifyName(itemName)
 		);
 		console.log(chalk.bgRed(`You lost ${itemName}`));
 	}
 
 	useItem(itemName: string): void {
+		const item = getCard(itemName) as ItemCard;
 		switch (itemName) {
 			case 'health-potion':
-				const additionalHp = itemStat[itemName].hp!;
+				const additionalHp = item.hp!;
 				this.hp += additionalHp;
 				console.log(`You got 💗 ${additionalHp}! Now you have 💗 ${this.hp}`);
 				break;
@@ -46,12 +41,14 @@ class Player extends Character {
 				break;
 		}
 
-		if (itemStat[itemName].oneTime) this.removeItem(itemName);
+		if (item.oneTime) this.removeItem(itemName);
 	}
 
 	loot(itemName: string): void {
-		this.inventory.push(itemName);
-		const { att } = itemStat[itemName];
+		const item = getCard(itemName) as ItemCard;
+
+		this.inventory.push(item);
+		const { att } = item;
 		if (att) {
 			this.att += att;
 			console.log(`💪 increased by +${att}!`);

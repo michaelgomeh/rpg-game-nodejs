@@ -1,20 +1,29 @@
 import { CARD_TYPE } from './constants';
-import { cards } from './data';
+import { deck, getCard } from './data';
 
-class Card {
+interface Card {
 	type: CARD_TYPE;
 	name: string;
+}
 
-	constructor(type: CARD_TYPE, name: string) {
-		this.type = type;
-		this.name = name;
-	}
+interface EnemyCard extends Card {
+	name: string;
+	att: number;
+	hp: number;
+}
+
+interface ItemCard extends Card {
+	name: string;
+	att?: number;
+	hp?: number;
+	oneTime: boolean;
 }
 
 class Deck {
 	cards: Card[];
 	constructor() {
-		this.cards = cards.map((e) => new Card(e.type, e.name));
+		this.cards = [...deck.map((e) => getCard(e))].reverse();
+		console.log('deck is: ', this.cards);
 	}
 
 	drawNextCard(): Card | undefined {
@@ -22,4 +31,4 @@ class Deck {
 	}
 }
 
-export { Card, Deck };
+export { Deck, Card, EnemyCard, ItemCard };

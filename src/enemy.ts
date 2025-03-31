@@ -1,9 +1,9 @@
+import { EnemyCard } from './card';
 import Character from './character';
-import { enemyStat, dialogs } from './data';
+import { dialogs, getCard } from './data';
 
 class Enemy extends Character {
-	constructor(name: string) {
-		const { hp, att } = enemyStat[name];
+	constructor({ name, hp, att }: EnemyCard) {
 		super(name, hp, att);
 	}
 }

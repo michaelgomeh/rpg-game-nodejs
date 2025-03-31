@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import inquirer from 'inquirer';
-import { Card, Deck } from './card';
+import { Card, Deck, EnemyCard, ItemCard } from './card';
 import { sleep, beautifyName, uglifyName, logTitle } from './utils';
-import { enemyStat, itemStat, dialogs, initialInventory } from './data';
+import { dialogs, getCard, initialInventory } from './data';
 import Enemy from './enemy';
 import dialog from './dialog';
 import {
@@ -50,7 +50,8 @@ class Game {
 			 
 			 `);
 		const playerName = await this.getUserName();
-		this.player = new Player(playerName, initialInventory);
+		this.player = new Player(playerName, initialInventory());
+		console.log(`welcome to Hell, ${playerName}`);
 		this.showNextTurnMenu();
 	}
 
@@ -70,28 +71,31 @@ class Game {
 		this.handleChoice(choice);
 	}
 
-	cardEventTitleGenerator(card: { name: string; type: CARD_TYPE }) {
+	cardEventTitleGenerator(card: Card) {
 		const { name, type } = card;
+
 		switch (type) {
 			case CARD_TYPE.ITEM:
-				const { att: itemAtt, hp: itemHp } = itemStat[name];
+				const { att: itemAtt, hp: itemHp } = card as ItemCard;
 
-				return `You found a ${beautifyName(name)} with ${
-					itemAtt ? `💪 ${itemAtt}` : ''
-				} ${itemHp ? `💗 ${itemHp}` : ''}`;
+				return `You found a ${beautifyName(name)}${
+					itemAtt || itemHp ? ' with' : ''
+				} ${itemAtt ? `💪 ${itemAtt}` : ''} ${itemHp ? `💗 ${itemHp}` : ''}`;
+
 			case CARD_TYPE.ENEMY:
-				const { att: enemyAtt, hp: enemyHp } = enemyStat[name];
+				const { att: enemyAtt, hp: enemyHp } = card as EnemyCard;
 				return `You faced a 💗 ${enemyHp}  💪 ${enemyAtt}  ${beautifyName(
 					name
 				)}!`;
+
 			default:
 				break;
 		}
 	}
 
-	async battle(enemyName: string) {
-		console.log(`A battle begins! ${this.player.name} vs ${enemyName} `);
-		const enemy = new Enemy(enemyName);
+	async battle(enemyCard: EnemyCard) {
+		const enemy = new Enemy(enemyCard);
+		console.log(`A battle begins! ${this.player.name} vs ${enemy.name} `);
 
 		while (this.player.hp > 0 && enemy.hp > 0) {
 			await sleep(300);
@@ -116,7 +120,7 @@ class Game {
 							message: 'Choose Item',
 							name: 'selectedItem',
 							type: 'list',
-							choices: this.player.inventory,
+							choices: this.player.inventory.map((e) => e.name),
 						},
 					]);
 					this.player.useItem(selectedItem);
@@ -140,7 +144,7 @@ class Game {
 
 			this.player.getDamage(enemy.att);
 			console.log(
-				`${enemyName}: 💗 ${enemy.hp} vs ${this.player.name}: 💗 ${this.player.hp}.`
+				`${enemy.name}: 💗 ${enemy.hp} vs ${this.player.name}: 💗 ${this.player.hp}.`
 			);
 		}
 
@@ -178,7 +182,7 @@ class Game {
 
 		switch (type) {
 			case CARD_TYPE.ENEMY:
-				this.battle(name);
+				this.battle(card as EnemyCard);
 				break;
 
 			case CARD_TYPE.ITEM:
@@ -222,7 +226,10 @@ class Game {
 			type: 'list',
 			name: 'selectedItem',
 			message: 'Choose item from inventory',
-			choices: [BACK, ...this.player.inventory.map((e) => beautifyName(e))],
+			choices: [
+				BACK,
+				...this.player.inventory.map((e) => beautifyName(e.name)),
+			],
 		});
 
 		if (selectedItem === BACK) this.showNextTurnMenu();
