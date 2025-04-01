@@ -2,6 +2,9 @@ type DialogSentence = [string, string];
 type Dialog = { [key: string]: DialogSentence[] };
 
 type CardName =
+	| 'chapel-of-rust'
+	| 'streets-of-desolation'
+	| 'castle-of-silence'
 	| 'wild-wolf'
 	| 'bandit'
 	| 'sword'

@@ -15,6 +15,7 @@ const INVENTORY_ACTIONS: { [key: string]: string } = {
 enum CARD_TYPE {
 	ENEMY,
 	ITEM,
+	LOCATION,
 }
 
 const BATTLE_ACTIONS = {

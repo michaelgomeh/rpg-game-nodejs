@@ -26,16 +26,6 @@ class Game {
 		this.deck = new Deck();
 	}
 
-	async getUserName(): Promise<string> {
-		const { name } = await inquirer.prompt({
-			type: 'input',
-			default: 'Mike',
-			name: 'name',
-			message: "What's your name, adventurer?",
-		});
-		return name;
-	}
-
 	async init() {
 		logTitle('Game is starting!');
 		console.log(`
@@ -51,14 +41,20 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
                                          
              
 			 `);
-		const playerName = await this.getUserName();
+		const { playerName } = await inquirer.prompt({
+			type: 'input',
+			default: 'Mike',
+			name: 'playerName',
+			message: "What's your name, adventurer?",
+		});
 		const { className } = await inquirer.prompt({
 			type: 'list',
 			name: 'className',
 			message: 'Choose your class:',
-			choices: ['Warrior', 'Mage', 'Thief'],
+			choices: ['Warrior', 'Mage', 'Rogue'],
 		});
 		player = new Player(playerName, className);
+		dialog.playerName = playerName;
 		this.showNextTurnMenu();
 	}
 
@@ -147,7 +143,7 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
 							enemy.getDamage(Math.floor(Math.random() * 4 * player.att));
 							break;
 
-						case 'Thief':
+						case 'Rogue':
 							console.log('Stealing');
 							if (Math.random() > 0.5) player.loot('health-potion');
 						default:
@@ -216,6 +212,12 @@ a88aaaa    .d8888b. 88d888b. 88 .d8888b.
 
 			case CARD_TYPE.ITEM:
 				this.lootItem(name);
+				break;
+
+			case CARD_TYPE.LOCATION:
+				player.location = card.name;
+				console.log(chalk.blue(`New Location: ${card.name}`));
+				this.showNextTurnMenu();
 				break;
 
 			default:

@@ -10,6 +10,7 @@ class Player extends Character {
 	class: string = 'default';
 	specialAtt = '';
 	runAwayChance = 0.5;
+	location = '';
 
 	constructor(name: string, className: string) {
 		super(name, 10, 2);
@@ -26,7 +27,7 @@ class Player extends Character {
 				this.specialAtt = 'Fireball';
 				break;
 
-			case 'Thief':
+			case 'Rogue':
 				this.runAwayChance = 0.7;
 				this.specialAtt = 'Steal';
 

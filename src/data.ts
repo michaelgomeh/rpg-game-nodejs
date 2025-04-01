@@ -2,9 +2,19 @@ import { Card, EnemyCard, ItemCard } from './card';
 import { CARD_TYPE } from './constants';
 import { CardName, Dialog } from './types/types';
 
-const cards: Readonly<Record<CardName, EnemyCard | ItemCard>> = {
+const cards: Readonly<Record<CardName, Card | EnemyCard | ItemCard>> = {
+	/** Locations */
+	'chapel-of-rust': { type: CARD_TYPE.LOCATION, name: 'chapel-of-rust' },
+	'streets-of-desolation': {
+		type: CARD_TYPE.LOCATION,
+		name: 'streets-of-desolation',
+	},
+	'castle-of-silence': { type: CARD_TYPE.LOCATION, name: 'castle-of-silence' },
+
+	/** Enemies */
 	'wild-wolf': { type: CARD_TYPE.ENEMY, name: 'wild-wolf', att: 3, hp: 9 },
 	bandit: { type: CARD_TYPE.ENEMY, name: 'bandit', att: 2, hp: 6 },
+	/** Items */
 	sword: { type: CARD_TYPE.ITEM, name: 'sword', att: 2, oneTime: false },
 	'travelers-map': {
 		type: CARD_TYPE.ITEM,
@@ -22,11 +32,19 @@ const cards: Readonly<Record<CardName, EnemyCard | ItemCard>> = {
 		name: 'letter-from-mom',
 		oneTime: false,
 	},
-} as const;
+};
 
-const deck: CardName[] = ['bandit', 'sword', 'wild-wolf', 'health-potion'];
+const deck: CardName[] = [
+	'chapel-of-rust',
+	'bandit',
+	'sword',
+	'wild-wolf',
+	'health-potion',
+];
 
-const getCard: (name: CardName) => ItemCard | EnemyCard = (name: CardName) => {
+const getCard: (name: CardName) => ItemCard | EnemyCard | Card = (
+	name: CardName
+) => {
 	const card = cards[name];
 	return card!;
 };
